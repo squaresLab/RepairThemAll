@@ -12,14 +12,17 @@ Z3_PATH = os.path.join(REPAIR_ROOT, "libs", "z3", "build")
 
 MAVEN_BIN = os.environ.get("MAVEN_BIN", expanduser("~/repair/deps/Maven/apache-maven/bin/"))
 
-JAVA7_HOME = os.environ.get("JAVA7_HOME", expanduser("/usr/lib/jvm/java-1.7.0/bin/"))
-JAVA8_HOME = os.environ.get("JAVA8_HOME", expanduser("~/repair/deps/jdk-8/bin"))
+# JAVA7_HOME = os.environ.get("JAVA7_HOME", expanduser("~/zulu7.31.0.5-ca-jdk7.0.232-linux_x64/bin"))
+# JAVA8_HOME = os.environ.get("JAVA8_HOME", expanduser("/usr/lib/jvm/java-8-openjdk-amd64/bin"))
+
+JAVA7_HOME = os.environ.get("JAVA7_HOME", expanduser("/usr/lib/jvm/java-1.7.0-openjdk-amd64/bin/"))
+JAVA8_HOME = os.environ.get("JAVA8_HOME", expanduser("/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/"))
 JAVA_ARGS = os.environ.get("JAVA_ARGS", "-Xmx4g -Xms1g")
 
 LOCAL_THREAD = int(os.environ.get("THREADS", "1"))
 GRID5K_MAX_NODE = 50
 ##In minutes
-TOOL_TIMEOUT = os.environ.get("TOOL_TIMEOUT", "120")
+TOOL_TIMEOUT = os.environ.get("TOOL_TIMEOUT", "5")
 #Format: HH:MM ## the fuction getGridTime calculates the timeout of the grid taking into account an overhead (expressed as percentage)
 GRID5K_TIME_OUT = getGridTime(TOOL_TIMEOUT, overhead=0.33)
 

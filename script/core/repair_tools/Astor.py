@@ -4,7 +4,7 @@ import shutil
 import subprocess
 import datetime
 
-from config import WORKING_DIRECTORY, REPAIR_ROOT, JAVA7_HOME, JAVA8_HOME, JAVA_ARGS
+from config import WORKING_DIRECTORY, REPAIR_ROOT, JAVA7_HOME, JAVA8_HOME, JAVA_ARGS, TOOL_TIMEOUT
 from core.RepairTool import RepairTool
 from core.utils import add_repair_tool
 from core.runner.RepairTask import RepairTask
@@ -16,7 +16,7 @@ class Astor(RepairTool):
                  seed=0,
                  mode="jgenprog",
                  maxgen="1000000",
-                 max_time=120,
+                 max_time=TOOL_TIMEOUT,
                  population="1",
                  parameters="x:x",
                  stopfirst=True):

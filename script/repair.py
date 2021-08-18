@@ -29,3 +29,8 @@ if __name__ == "__main__":
                 tasks.append(task)
 
         get_runner(tasks, args).execute()
+
+    with open('rta.log') as f:
+        print(f.read())
+
+    input('\n\nPress enter to exit')

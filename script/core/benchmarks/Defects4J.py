@@ -13,6 +13,8 @@ from core.utils import add_benchmark
 
 FNULL = open(os.devnull, 'w')
 
+import logging
+logging.basicConfig(filename='rta.log', encoding='utf-8', level=logging.DEBUG)
 
 class Defects4J(Benchmark):
     """Defects4j Benchmark"""
@@ -60,15 +62,23 @@ class Defects4J(Benchmark):
         return os.path.join(self.path, "framework", "bin")
 
     def checkout(self, bug, working_directory, buggy_version=True):
+        logging.debug('checkout')
         cmd = """export PATH="%s:%s:$PATH";export JAVA_HOME="%s";
+mkdir -p %s;
 defects4j checkout -p %s -v %sb -w %s;
 """ % (JAVA7_HOME,
        self._get_benchmark_path(),
        os.path.join(JAVA7_HOME, '..'),
+       working_directory,
        bug.project,
        bug.bug_id,
        working_directory)
-        subprocess.call(cmd, shell=True, stdout=FNULL, stderr=subprocess.STDOUT)
+        try:
+            logging.debug(cmd)
+            subprocess.call(cmd, shell=True, stdout=FNULL, stderr=subprocess.STDOUT)
+        except CalledProcessError as e:
+            logging.debug(e.output)
+            raise e
         pass
 
     def compile(self, bug, working_directory):
@@ -80,7 +90,12 @@ defects4j compile;
        self._get_benchmark_path(),
        os.path.join(JAVA7_HOME, '..'),
        working_directory)
-        subprocess.call(cmd, shell=True, stdout=FNULL, stderr=subprocess.STDOUT)
+        try:
+            output = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT)
+            logging.debug(output)
+        except subprocess.CalledProcessError as e:
+            logging.error(e.output)
+            raise e
         pass
 
     def run_test(self, bug, working_directory, test=None):
@@ -164,6 +179,7 @@ defects4j info -p %s -b %s;
         return [source]
 
     def classpath(self, bug):
+        logging.debug('classpath')
         classpath = ""
         workdir = bug.working_directory
 
@@ -188,11 +204,16 @@ defects4j info -p %s -b %s;
         self._get_benchmark_path(), 
         os.path.join(JAVA7_HOME, '..'),
         bug.working_directory)
-        libs_split = subprocess.check_output(cmd, shell=True, stderr=FNULL).split(":")
-        for lib_str in libs_split:
-            lib = os.path.basename(lib_str)
-            if lib[-4:] == ".jar":
-                libs.append(lib)
+        logging.debug(cmd)
+        try:
+            libs_split = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT).split(":")
+            for lib_str in libs_split:
+                lib = os.path.basename(lib_str)
+                if lib[-4:] == ".jar":
+                    libs.append(lib)
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(str(e.output), e)
+
         libs_path = os.path.join(self.path, "framework", "projects", bug.project, "lib")
         for (root, _, files) in os.walk(libs_path):
             for f in files:

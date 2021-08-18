@@ -8,6 +8,9 @@ from core.runner.Runner import Runner
 from core.renderer.renderer import get_renderer
 from config import LOCAL_THREAD
 
+import logging
+logging.basicConfig(filename='rta.log', encoding='utf-8', level=logging.DEBUG)
+
 
 class RunnerWorker(Thread):
     def __init__(self, local_runner, callback):
@@ -43,6 +46,7 @@ class RepairWorker(Thread):
                 task.status = "ERROR"
                 print e
                 traceback.print_exc()
+                logging.error(e, exc_info=True)
             finally:
                 if callback is not None:
                     callback(task)
@@ -88,6 +92,7 @@ class LocalRunner(Runner):
         pass
 
     def execute(self):
+        logging.info('in execution')
         worker = RunnerWorker(self, self.repair_done)
         renderer = get_renderer(self)
         worker.start()
