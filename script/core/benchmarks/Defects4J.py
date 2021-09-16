@@ -5,7 +5,7 @@ import re
 import subprocess
 from sets import Set
 
-from config import DATA_PATH, JAVA7_HOME
+from config import DATA_PATH, JAVA8_HOME
 from config import REPAIR_ROOT
 from core.Benchmark import Benchmark
 from core.Bug import Bug
@@ -49,6 +49,8 @@ class Defects4J(Benchmark):
             project_data_path = os.path.join(data_defects4j_path, project_data)
             if not os.path.isfile(project_data_path):
                 continue
+            if not project_data_path.endswith('.json'):
+                continue
             with open(project_data_path) as fd:
                 data = json.load(fd)
                 self.project_data[data['project']] = data
@@ -66,9 +68,9 @@ class Defects4J(Benchmark):
         cmd = """export PATH="%s:%s:$PATH";export JAVA_HOME="%s";
 mkdir -p %s;
 defects4j checkout -p %s -v %sb -w %s;
-""" % (JAVA7_HOME,
+""" % (JAVA8_HOME,
        self._get_benchmark_path(),
-       os.path.join(JAVA7_HOME, '..'),
+       os.path.join(JAVA8_HOME, '..'),
        working_directory,
        bug.project,
        bug.bug_id,
@@ -86,9 +88,9 @@ defects4j checkout -p %s -v %sb -w %s;
 export _JAVA_OPTIONS=-Djdk.net.URLClassPath.disableClassPathURLCheck=true;
 cd %s;
 defects4j compile;
-""" % (JAVA7_HOME,
+""" % (JAVA8_HOME,
        self._get_benchmark_path(),
-       os.path.join(JAVA7_HOME, '..'),
+       os.path.join(JAVA8_HOME, '..'),
        working_directory)
         try:
             output = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT)
@@ -106,9 +108,9 @@ defects4j compile;
 export _JAVA_OPTIONS=-Djdk.net.URLClassPath.disableClassPathURLCheck=true; 
 cd %s;
 defects4j test %s;
-""" % (JAVA7_HOME,
+""" % (JAVA8_HOME,
        self._get_benchmark_path(),
-       os.path.join(JAVA7_HOME, '..'),
+       os.path.join(JAVA8_HOME, '..'),
        working_directory,
        test_arg)
         subprocess.check_call(cmd, shell=True, stdout=FNULL, stderr=subprocess.STDOUT)
@@ -121,9 +123,9 @@ defects4j test %s;
         cmd = """export PATH="%s:%s:$PATH";export JAVA_HOME="%s";
 export _JAVA_OPTIONS=-Djdk.net.URLClassPath.disableClassPathURLCheck=true;
 defects4j info -p %s -b %s;
-""" % (JAVA7_HOME,
+""" % (JAVA8_HOME,
        self._get_benchmark_path(), 
-       os.path.join(JAVA7_HOME, '..'),
+       os.path.join(JAVA8_HOME, '..'),
        bug.project, 
        bug.bug_id)
         info = subprocess.check_output(cmd, shell=True, stderr=FNULL)
@@ -200,9 +202,9 @@ defects4j info -p %s -b %s;
         cmd = """export PATH="%s:%s:$PATH";export JAVA_HOME="%s";
         cd %s;
         defects4j export -p cp.test 2> /dev/null;
-        """ % (JAVA7_HOME, 
+        """ % (JAVA8_HOME, 
         self._get_benchmark_path(), 
-        os.path.join(JAVA7_HOME, '..'),
+        os.path.join(JAVA8_HOME, '..'),
         bug.working_directory)
         logging.debug(cmd)
         try:

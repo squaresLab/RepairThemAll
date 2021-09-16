@@ -1,0 +1,133 @@
+{
+   "project": "Time", 
+   "src": {
+      "11": {
+         "bintest": "target/test-classes", 
+         "binjava": "target/classes", 
+         "srcjava": "src/main/java", 
+         "srctest": "src/test/java"
+      }, 
+      "27": {
+         "bintest": "build/tests", 
+         "binjava": "build/classes", 
+         "srcjava": "src/main/java", 
+         "srctest": "src/test/java"
+      }
+   }, 
+   "url": "https://github.com/JodaOrg/joda-time", 
+   "nbBugs": 26, 
+   "libs": [
+      "joda-convert-1.2.jar"
+   ], 
+   "package": "org.joda", 
+   "classpath": {
+      "11": "target/classes:target/test-classes", 
+      "27": "build/classes:build/tests"
+   }, 
+   "complianceLevel": {
+      "24": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "25": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "26": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "27": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "20": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "22": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "23": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "1": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "3": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "2": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "5": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "4": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "7": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "6": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "9": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "8": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "11": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "10": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "13": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "12": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "15": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "14": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "17": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "16": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "19": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "18": {
+         "source": 8, 
+         "target": 8
+      }
+   }
+}

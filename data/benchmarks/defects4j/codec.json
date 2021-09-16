@@ -1,0 +1,106 @@
+{
+   "project": "Codec", 
+   "src": {
+      "10": {
+         "bintest": "target/tests", 
+         "binjava": "target/classes", 
+         "srcjava": "src/java", 
+         "srctest": "src/test"
+      }, 
+      "18": {
+         "bintest": "target/test-classes", 
+         "binjava": "target/classes", 
+         "srcjava": "src/main/java", 
+         "srctest": "src/test/java"
+      }, 
+      "16": {
+         "bintest": "target/tests", 
+         "binjava": "target/classes", 
+         "srcjava": "src/main/java", 
+         "srctest": "src/test/java"
+      }
+   }, 
+   "url": "https://github.com/apache/commons-codec", 
+   "nbBugs": 18, 
+   "libs": [], 
+   "package": "org.apache.commons", 
+   "classpath": {
+      "10": "target/classes:target/tests", 
+      "18": "target/classes:target/test-classes", 
+      "16": "target/classes:target/tests"
+   }, 
+   "complianceLevel": {
+      "11": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "10": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "13": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "12": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "15": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "14": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "17": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "16": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "18": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "1": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "3": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "2": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "5": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "4": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "7": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "6": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "9": {
+         "source": 8, 
+         "target": 8
+      }, 
+      "8": {
+         "source": 8, 
+         "target": 8
+      }
+   }
+}
