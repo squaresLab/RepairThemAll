@@ -20,8 +20,11 @@ COPY libs /libs
 RUN rm -rf libs/z3/build
 COPY data /data
 COPY init.sh /init.sh 
+COPY set_git.sh /set_git.sh 
 COPY benchmarks /benchmarks
 COPY script /script
+COPY rhino.jar /rhino.jar
 
 RUN /init.sh
+RUN /set_git.sh
 ENTRYPOINT [ "script/repair.py" ]
