@@ -5,10 +5,12 @@ import os
 from core.utils import get_benchmark, parser
 from core.runner.RepairTask import RepairTask
 from core.runner.get_runner import get_runner
+import logging
 
 
 if __name__ == "__main__":
     args = parser.parse_args()
+    logging.debug('Started program')
 
     if "benchmark" in args:
         args.benchmark = get_benchmark(args.benchmark)
