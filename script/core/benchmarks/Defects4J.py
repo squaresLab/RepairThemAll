@@ -30,6 +30,7 @@ class Defects4J(Benchmark):
         return os.path.join(DATA_PATH, "benchmarks", "defects4j")
 
     def get_bug(self, bug_id):
+        logging.debug('looking for bug '+bug_id)
         separator = "-"
         if "_" in bug_id:
             separator = "_"
@@ -37,7 +38,9 @@ class Defects4J(Benchmark):
         for bug in self.get_bugs():
             if bug.project.lower() == project.lower():
                 if int(bug.bug_id) == int(id):
+                    logging.debug('Bug found')
                     return bug
+        logging.error('Bug not found ' + bug_id)
         return None
 
     def get_bugs(self):
@@ -54,8 +57,8 @@ class Defects4J(Benchmark):
             with open(project_data_path) as fd:
                 data = json.load(fd)
                 self.project_data[data['project']] = data
-                for i in range(1, data['nbBugs'] + 1):
-                    bug = Bug(self, data['project'], i)
+                for n in data['complianceLevel'].keys():
+                    bug = Bug(self, data['project'], int(n))
                     bug.project_data = data
                     self.bugs += [bug]
         return self.bugs
@@ -77,8 +80,14 @@ defects4j checkout -p %s -v %sb -w %s;
        working_directory)
         try:
             logging.debug(cmd)
-            subprocess.call(cmd, shell=True, stdout=FNULL, stderr=subprocess.STDOUT)
-        except CalledProcessError as e:
+            output = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT)
+            logging.debug(output)
+            if bug.project == "Closure": # they rename one of their dependencies, so I'm un-renaming it in the code.
+                cmd = "find %s -type f -exec  sed -i 's/com.google.javascript.rhino.head./org.mozilla.javascript./g' {} +" % working_directory
+                logging.debug(cmd)
+                output = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT)
+                logging.debug(output)
+        except subprocess.CalledProcessError as e:
             logging.debug(e.output)
             raise e
         pass
@@ -93,6 +102,7 @@ defects4j compile;
        os.path.join(JAVA8_HOME, '..'),
        working_directory)
         try:
+            logging.debug(cmd)
             output = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT)
             logging.debug(output)
         except subprocess.CalledProcessError as e:
@@ -113,6 +123,7 @@ defects4j test %s;
        os.path.join(JAVA8_HOME, '..'),
        working_directory,
        test_arg)
+        logging.debug(cmd)
         subprocess.check_call(cmd, shell=True, stdout=FNULL, stderr=subprocess.STDOUT)
         if os.path.exists(os.path.join(working_directory, "failing_tests")):
             with open(os.path.join(working_directory, "failing_tests")) as fd:
@@ -128,6 +139,7 @@ defects4j info -p %s -b %s;
        os.path.join(JAVA8_HOME, '..'),
        bug.project, 
        bug.bug_id)
+        logging.debug(cmd)
         info = subprocess.check_output(cmd, shell=True, stderr=FNULL)
 
         tests = Set()
@@ -185,6 +197,17 @@ defects4j info -p %s -b %s;
         classpath = ""
         workdir = bug.working_directory
 
+        # code block to copy over the rhino.jar for closure bugs
+        if bug.project.lower() == "closure":
+            cmd = """cp /rhino.jar %s;
+            """ % (os.path.join(workdir, "lib"))
+            logging.debug(cmd)
+            try:
+                logging.debug(cmd)
+                libs_split = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT)
+            except subprocess.CalledProcessError as e:
+                raise RuntimeError(str(e.output), e)
+
         sources = self.project_data[bug.project]["classpath"]
         sources = collections.OrderedDict(sorted(sources.items(), key=lambda t: int(t[0])))
         for index, cp in sources.iteritems():
@@ -208,6 +231,7 @@ defects4j info -p %s -b %s;
         bug.working_directory)
         logging.debug(cmd)
         try:
+            logging.debug(cmd)
             libs_split = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT).split(":")
             for lib_str in libs_split:
                 lib = os.path.basename(lib_str)
